@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_basic_quiz_app/gradient_container.dart';
 import 'package:flutter_basic_quiz_app/questions_screen.dart';
+import 'package:flutter_basic_quiz_app/results_screen.dart';
 import 'package:flutter_basic_quiz_app/welcome_screen.dart';
+import 'package:flutter_basic_quiz_app/data/questions.dart';
 
 const String startScreen = "welcome-screen";
 const String questionScreen = "question-screen";
+const String resultsScreen = "results-screen";
 class Quiz extends StatefulWidget
 {
   const Quiz ({super.key});
@@ -35,12 +38,24 @@ class _QuizState extends State <Quiz>
   // }
 
   var activeScreen = startScreen;
+  final List<String> selectedAnswers = [];
 
   void switchScreen ()
   {
     setState(() {
       activeScreen = questionScreen;
     });
+  }
+
+  void chooseAnswer(String answer)
+  {
+    selectedAnswers.add(answer);
+    if (selectedAnswers.length == questions.length)
+    {
+      setState(() {
+        activeScreen = resultsScreen;
+      });
+    }
   }
 
 
@@ -51,9 +66,13 @@ class _QuizState extends State <Quiz>
     {
       screenWidget = WelcomeScreen(switchScreen);
     }
+    else if (activeScreen == questionScreen)
+    {
+      screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
+    }
     else
     {
-      screenWidget = QuestionsScreen();
+      screenWidget = ResultsScreen(selectedAnswers: selectedAnswers);
     }
     return MaterialApp(
       home: Scaffold(
