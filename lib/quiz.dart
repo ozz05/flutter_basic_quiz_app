@@ -38,11 +38,12 @@ class _QuizState extends State <Quiz>
   // }
 
   var activeScreen = startScreen;
-  final List<String> selectedAnswers = [];
+  List<String> selectedAnswers = [];
 
   void switchScreen ()
   {
     setState(() {
+      selectedAnswers = [];
       activeScreen = questionScreen;
     });
   }
@@ -72,7 +73,7 @@ class _QuizState extends State <Quiz>
     }
     else
     {
-      screenWidget = ResultsScreen(selectedAnswers: selectedAnswers);
+      screenWidget = ResultsScreen(selectedAnswers: selectedAnswers, restartQuiz: switchScreen);
     }
     return MaterialApp(
       home: Scaffold(
